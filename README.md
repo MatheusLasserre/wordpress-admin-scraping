@@ -1,4 +1,4 @@
-# wordpress-admin-scrapping
+# NodeJs scraper designed for gathering WordPress registered users' data
 
 A simple scraper using puppeteer for gathering Wordpress registered users' custom data.
 
