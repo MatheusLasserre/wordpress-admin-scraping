@@ -1,25 +1,15 @@
 const puppeteer = require('puppeteer');
-const axios = require('axios')
 const fs = require('fs');
 
 const loginData = {
-    'log': 'matheuslasserre3',
-    'pwd': 'Lasserre',
-    'g-recaptcha-response': '03AGdBq26Gx3WatKSOUTMYgx1UC87H6oxsrOazlnYbGgrQ2PaWK5JZMUKBXSEWICvvuGQDx5acE0al6GRk8YwlTRPpkYzgYQaCqnTL5N_WVNGgN45dfdNSiXcAbv96XBnZFDEp1gtIYSOpF_1ACMLVgHLh7XYzVI24vWE2RceyXcLqZoBIxL2K7rrhbCC6X6sJvQaXRXlAZb088y6utF_1a5vnIOcmSmcxLcESbkwdrAxbpsN4uvRjYpNRJP3pmqiFIy- IkKFufcttkE4GFTssUi9SsKG_Mtiz6d3DRcXFmy9GMeZDgZGeMAfrSi4czk41Vtp0K0FK0T3fR27nWsY8YKaXJ5ttCs5O1Z2rNVD1jg2JSmJkqNS0TfLA1npdxpsymk24flNpxOkxizOhrrtSDtYJCklq0HwbyL12H0 - lkC5iCHRMGOrqJ80uisHdk9J2YAjFPgRn8hrWvcZ3dD6YA82iwC9 - yCaP2MD9KyZCCtC6LHIZRP6olllsNepqIkknc8dby9GZWp1RXO_XOCh73vL - MNiDSd4BFg',
-    'rememberme': 'forever',
-    'redirect_to': 'https://icls.com.br/wp-admin/users.php',
-    'testcookie': '1'
+    'log': 'yourlogin',
+    'pwd': 'yourpass',
 }
-const URL = 'https://icls.com.br/wp-login.php'
-const METHOD = 'POST'
-
-// button id = wp-submit
-
-const date = new Date();
-
-const time = `${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`
 
 
+
+
+// Adjust the script for your needs: Element ids and classes, goto() urls, etc.
 
 async function Scrape() {
 
@@ -39,7 +29,7 @@ async function Scrape() {
 
     // going to login page
     console.log('Going to login page...');
-    await page.goto('https://icls.com.br/wp-login.php', { waitUntil: 'networkidle0' });
+    await page.goto('https:your-site.com/wp-login.php', { waitUntil: 'networkidle0' });
     console.log('Done.');
 
     // type credencials
@@ -57,13 +47,12 @@ async function Scrape() {
     console.log('Logged in.')
 
     // going to subscribed users page
-    console.log('Going to subscribed users page...')
+    console.log('Going to subscribed users page & Starting Search through all pages...')
 
     // Loop throught all available pages
-    console.log('Started search through all pages...')
     for (let i = 1; i <= 47; i++) {
         console.log(`For page ${i}:`)
-        await page.goto(`https://icls.com.br/wp-admin/users.php?filter_group_ids%5B0%5D=2&paged=${i.toString()}`, { waitUntil: 'networkidle0' });
+        await page.goto(`https:your-site.com/wp-admin/users.php?filter_group_ids%5B0%5D=2&paged=${i.toString()}`, { waitUntil: 'networkidle0' });
 
         // get All users id from this page
         console.log('Getting all users id from page...');
@@ -85,8 +74,10 @@ async function Scrape() {
         console.log('Getting users info from page...');
 
         for (let x = 0; x < idObject.length; x++) {
-            await page.goto(`https://icls.com.br/wp-admin/user-edit.php?user_id=${idObject[x].toString()}&wp_http_referer=%2Fwp-admin%2Fusers.php%3Ffilter_group_ids%255B%255D%3D2`, {waitUntil: 'networkidle0'});
+            await page.goto(`https://your-site/wp-admin/user-edit.php?user_id=${idObject[x].toString()}&wp_http_referer=%2Fwp-admin%2Fusers.php%3Ffilter_group_ids%255B%255D%3D2`, {waitUntil: 'networkidle0'});
 
+
+            // Thats the logic i used for the info i needed
             userObject = await page.evaluate(() => {
                 let email = document.getElementById('email').value;
                 let firstname = email.substring(0, email.indexOf('@'));
@@ -101,6 +92,7 @@ async function Scrape() {
                 return dumbObject
             })
             usersArray.push(userObject);
+            // Simple one-line terminal progress counter
             process.stdout.write("\r\x1b[K");
             process.stdout.write(`${x + 1}/${idObject.length }`);
 
