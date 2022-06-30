@@ -1,0 +1,28 @@
+{
+  "name": "wordpress-admin-scraping",
+  "version": "1.0.0",
+  "description": "Script to gather personalized data from registered users",
+  "main": "Scrape.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/MatheusLasserre/wordpress-admin-scraping.git"
+  },
+  "keywords": [
+    "nodejs",
+    "Puppeteer",
+    "scraping",
+    "authentication"
+  ],
+  "author": "Matheus Lasserre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatheusLasserre/wordpress-admin-scraping/issues"
+  },
+  "homepage": "https://github.com/MatheusLasserre/wordpress-admin-scraping#readme",
+  "dependencies": {
+    "puppeteer": "^15.2.0"
+  }
+}
